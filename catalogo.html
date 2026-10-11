@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OM Shop Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+[hidden]{display:none!important}
+html,body{margin:0}
+img{max-width:100%}
+/* Layout: revista de moda; portada a sangre con fotos gigantes que se mueven, cinta en movimiento, y cada categoría abre con su palabra gigante deslizándose antes de su rejilla editorial */
+:root{
+  --papel:#FFFFFF;
+  --tinta:#111111;
+  --gris:#7D7B78;
+  --linea:#E4E2DF;
+  --champan:#A88D5C;
+  --noche:#0B0A09;
+  --display:"Italiana","Didot","Bodoni 72",Georgia,serif;
+  --texto:"Jost","Poppins","Helvetica Neue",Arial,sans-serif;
+  --curva:cubic-bezier(.2,.7,.2,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--papel);color:var(--tinta);font-family:var(--texto);font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--champan);outline-offset:3px}
+
+/* Encabezado */
+.cabecera{position:fixed;left:0;right:0;top:0;z-index:30;padding-top:env(safe-area-inset-top,0px);color:#fff;transition:background .4s,color .4s,box-shadow .4s}
+.cabecera.solida{background:rgba(255,255,255,.94);color:var(--tinta);box-shadow:0 1px 0 var(--linea);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.cab-in{max-width:1440px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none}
+.marca svg{width:36px;height:36px;flex:none}
+.marca b{font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:.3em}
+.acciones{display:flex;gap:18px;align-items:center}
+.acciones a{display:flex;gap:7px;align-items:center;text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;padding:6px 0}
+.acciones svg{width:18px;height:18px;flex:none}
+@media (max-width:520px){.acciones .txt{display:none}}
+
+/* Portada */
+.portada{position:relative;height:min(94svh,980px);min-height:560px;background:var(--noche);overflow:hidden;color:#fff}
+.diapo{position:absolute;inset:0;display:grid;grid-template-columns:1fr;opacity:0;transition:opacity 1.4s ease}
+.diapo.activa{opacity:1}
+@media (min-width:900px){.diapo{grid-template-columns:repeat(3,1fr)}}
+.diapo figure{margin:0;overflow:hidden;position:relative}
+.diapo figure:nth-child(n+2){display:none}
+@media (min-width:900px){.diapo figure:nth-child(n+2){display:block}}
+.diapo img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.14);transition:transform 7s linear}
+.diapo.activa img{transform:scale(1.0)}
+.diapo figure:nth-child(2) img{transition-delay:.15s}.diapo figure:nth-child(3) img{transition-delay:.3s}
+.portada::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.05) 55%,rgba(0,0,0,.62) 100%);pointer-events:none}
+.portada-texto{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:0 16px 34px;max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.portada-texto .ceja{font-size:11px;letter-spacing:.42em;text-transform:uppercase;font-weight:500}
+.gigante{margin:0;font-family:var(--display);font-weight:400;line-height:.82;font-size:clamp(78px,21vw,300px);letter-spacing:-.01em}
+.gigante span{display:inline-block;animation:entrar 1.4s var(--curva) both}
+.gigante span:nth-child(2){animation-delay:.12s}
+@keyframes entrar{from{transform:translateY(40px)}to{transform:none}}
+.fila-portada{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;gap:12px;text-decoration:none;background:#fff;color:var(--tinta);padding:16px 26px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;font-weight:500;transition:background .3s,color .3s}
+.cta:hover{background:var(--champan);color:#fff}
+.contador{font-size:12px;letter-spacing:.2em;font-variant-numeric:tabular-nums;display:flex;gap:12px;align-items:center}
+.barras{display:flex;gap:6px}
+.barras button{appearance:none;border:0;padding:8px 0;background:none;cursor:pointer;width:34px}
+.barras button i{display:block;height:2px;background:rgba(255,255,255,.35);position:relative;overflow:hidden}
+.barras button i::after{content:"";position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+.barras button.on i::after{animation:llenar 5.5s linear forwards}
+@keyframes llenar{to{transform:scaleX(1)}}
+
+/* Cinta */
+.cinta{background:var(--tinta);color:#fff;overflow:hidden;white-space:nowrap;padding:14px 0}
+.cinta-in{display:inline-flex;animation:correr 28s linear infinite}
+.cinta span{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:500;padding-right:48px}
+.cinta span::after{content:"✦";color:var(--champan);margin-left:48px}
+@keyframes correr{to{transform:translateX(-50%)}}
+
+/* Navegación de categorías */
+.categorias{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--linea)}
+.cat-in{max-width:1440px;margin:0 auto;padding:0 16px;display:flex;gap:26px;overflow-x:auto;scrollbar-width:none}
+.cat-in::-webkit-scrollbar{display:none}
+.cat-in a{flex:none;text-decoration:none;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;padding:16px 0;color:var(--gris);border-bottom:2px solid transparent;transition:color .3s,border-color .3s}
+.cat-in a:hover,.cat-in a.on{color:var(--tinta);border-color:var(--tinta)}
+.cat-in small{font-size:10px;margin-left:5px;font-variant-numeric:tabular-nums}
+
+/* Secciones */
+.seccion{padding-block:24px 64px;scroll-margin-top:110px}
+.palabra{overflow:hidden;padding-block:10px 18px}
+.palabra h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(84px,19vw,280px);line-height:.85;white-space:nowrap;will-change:transform;letter-spacing:-.01em}
+.palabra h2 em{font-style:normal;color:var(--champan);font-family:var(--texto);font-size:.16em;letter-spacing:.3em;vertical-align:top;margin-left:.4em;font-weight:500}
+.envoltura{max-width:1440px;margin:0 auto;padding-inline:16px}
+.rejilla{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 12px}
+@media (min-width:900px){.rejilla{grid-template-columns:repeat(4,minmax(0,1fr));gap:48px 18px}}
+.pieza{display:flex;flex-direction:column;gap:12px;min-width:0;transform:translateY(26px);transition:transform 1.1s var(--curva)}
+.pieza.visto{transform:none}
+.pieza.grande{grid-column:span 2}
+@media (min-width:900px){.pieza.grande{grid-row:span 2}}
+.foto{position:relative;overflow:hidden;aspect-ratio:2/3;background:#F1F0EE}
+.pieza.grande .foto{aspect-ratio:4/5}
+@media (min-width:900px){.pieza.grande .foto{aspect-ratio:auto;flex:1;min-height:0}}
+.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);transition:transform 1.6s var(--curva)}
+.pieza.visto .foto img{transform:scale(1)}
+.pieza.visto .foto:hover img{transform:scale(1.05)}
+.ref{position:absolute;left:10px;top:10px;font-size:10px;letter-spacing:.2em;font-weight:500;background:rgba(255,255,255,.9);padding:5px 8px;font-variant-numeric:tabular-nums}
+.datos{display:flex;flex-direction:column;gap:5px;min-width:0}
+.nombre{margin:0;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.35}
+.pieza.grande .nombre{font-size:15px}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.tallas{font-size:12px;color:var(--gris);letter-spacing:.04em}
+.precio{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.colores{display:flex;gap:6px;align-items:center}
+.punto{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.18)}
+.quiero{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;text-decoration:none;border:1px solid var(--tinta);padding:12px 8px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:500;transition:background .3s,color .3s}
+.quiero:hover{background:var(--tinta);color:#fff}
+.quiero svg{width:15px;height:15px;flex:none}
+
+/* Lookbook en movimiento */
+.lookbook{background:var(--noche);color:#fff;padding-block:56px;overflow:hidden}
+.lookbook .envoltura{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.lookbook h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(46px,9vw,110px);line-height:.9}
+.lookbook p{margin:0;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#B9B2A6}
+.tira{display:flex;width:max-content;gap:12px;animation:correr 60s linear infinite}
+.tira:hover{animation-play-state:paused}
+.tira img{height:min(62vh,520px);aspect-ratio:2/3;width:auto;object-fit:cover;display:block}
+
+/* Pie */
+.pie{background:var(--noche);color:#fff;border-top:1px solid #2A2724;padding-block:48px 56px}
+.pie-in{display:grid;gap:30px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.pie h3{margin:0 0 10px;font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--champan);font-weight:500}
+.pie p{margin:0;font-size:15px;line-height:1.6;font-weight:300}
+.pie .sub{color:#9C958B;font-size:13px}
+.copiar{appearance:none;background:none;border:0;color:#9C958B;cursor:pointer;font:500 10.5px/1 var(--texto);letter-spacing:.22em;text-transform:uppercase;padding:8px 0;text-decoration:underline;text-underline-offset:4px}
+.firma{margin:44px 0 0;font-family:var(--display);font-size:clamp(60px,16vw,200px);line-height:.85;color:#26231F}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .pieza{transform:none}.foto img{transform:none}
+}
+</style>
+
+<header class="cabecera" id="cabecera">
+  <div class="cab-in">
+    <a class="marca" href="#inicio" aria-label="OM Shop, inicio">
+      <svg viewBox="0 0 1000 1000" aria-hidden="true"><circle cx="500" cy="500" r="500" fill="#EEEEEE"/><g transform="translate(70.00 569.56) scale(0.19734)"><g fill="#3A3D3E"><path d="M33 -353Q33 -456 81.5 -538.0Q130 -620 212.5 -666.0Q295 -712 394 -712Q493 -712 575.5 -666.0Q658 -620 705.5 -538.0Q753 -456 753 -353Q753 -250 705.0 -167.5Q657 -85 575.0 -39.0Q493 7 394 7Q295 7 212.5 -39.0Q130 -85 81.5 -167.5Q33 -250 33 -353ZM579 -353Q579 -446 528.5 -501.5Q478 -557 394 -557Q309 -557 258.5 -502.0Q208 -447 208 -353Q208 -260 258.5 -204.5Q309 -149 394 -149Q478 -149 528.5 -205.0Q579 -261 579 -353Z"/><path d="M1643 -702V0H1472V-421L1315 0H1177L1019 -422V0H848V-702H1050L1247 -216L1442 -702Z"/></g><g fill="#3A3D3E"><path d="M1771 -186H1868Q1873 -137 1908.5 -103.5Q1944 -70 2012 -70Q2077 -70 2114.5 -102.5Q2152 -135 2152 -186Q2152 -226 2130.0 -251.0Q2108 -276 2075.0 -289.0Q2042 -302 1986 -317Q1917 -335 1875.5 -353.0Q1834 -371 1804.5 -409.5Q1775 -448 1775 -513Q1775 -570 1804.0 -614.0Q1833 -658 1885.5 -682.0Q1938 -706 2006 -706Q2104 -706 2166.5 -657.0Q2229 -608 2237 -527H2137Q2132 -567 2095.0 -597.5Q2058 -628 1997 -628Q1940 -628 1904.0 -598.5Q1868 -569 1868 -516Q1868 -478 1889.5 -454.0Q1911 -430 1942.5 -417.5Q1974 -405 2031 -389Q2100 -370 2142.0 -351.5Q2184 -333 2214.0 -294.5Q2244 -256 2244 -190Q2244 -139 2217.0 -94.0Q2190 -49 2137.0 -21.0Q2084 7 2012 7Q1943 7 1888.5 -17.5Q1834 -42 1803.0 -85.5Q1772 -129 1771 -186Z"/><path d="M2915 -697V0H2824V-316H2469V0H2378V-697H2469V-391H2824V-697Z"/><path d="M3036 -349Q3036 -451 3082.5 -532.5Q3129 -614 3209.0 -659.5Q3289 -705 3386 -705Q3484 -705 3564.0 -659.5Q3644 -614 3690.0 -533.0Q3736 -452 3736 -349Q3736 -246 3690.0 -165.0Q3644 -84 3564.0 -38.5Q3484 7 3386 7Q3289 7 3209.0 -38.5Q3129 -84 3082.5 -165.5Q3036 -247 3036 -349ZM3643 -349Q3643 -433 3609.5 -495.5Q3576 -558 3518.0 -592.0Q3460 -626 3386 -626Q3312 -626 3254.0 -592.0Q3196 -558 3162.5 -495.5Q3129 -433 3129 -349Q3129 -266 3162.5 -203.0Q3196 -140 3254.5 -106.0Q3313 -72 3386 -72Q3459 -72 3517.5 -106.0Q3576 -140 3609.5 -203.0Q3643 -266 3643 -349Z"/><path d="M4081 -291H3947V0H3856V-697H4081Q4199 -697 4260.5 -640.0Q4322 -583 4322 -493Q4322 -406 4262.5 -348.5Q4203 -291 4081 -291ZM4229 -493Q4229 -622 4081 -622H3947V-366H4081Q4157 -366 4193.0 -399.0Q4229 -432 4229 -493Z"/></g></g></svg>
+      <b>OM SHOP</b>
+    </a>
+    <nav class="acciones">
+      <a href="https://www.instagram.com/omshopve" target="_blank" rel="noopener" aria-label="Instagram @omshopve">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg><span class="txt">Instagram</span>
+      </a>
+      <a href="https://wa.me/584249309160" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg><span class="txt">WhatsApp</span></a>
+    </nav>
+  </div>
+</header>
+
+<section class="portada" id="inicio" aria-label="Portada">
+  <div id="diapos"></div>
+  <div class="portada-texto">
+    <span class="ceja">Nueva colección</span>
+    <h1 class="gigante"><span>OM</span> <span>SHOP</span></h1>
+    <div class="fila-portada">
+      <a class="cta" href="#coleccion">Ver colección <span aria-hidden="true">↓</span></a>
+      <div class="contador"><span id="num">01 / 04</span><div class="barras" id="barras"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cinta" aria-hidden="true"><div class="cinta-in" id="cinta"></div></div>
+
+<nav class="categorias" id="coleccion" aria-label="Categorías"><div class="cat-in" id="cats"></div></nav>
+
+<main id="secciones"></main>
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie-in">
+      <div>
+        <h3>Pedidos por WhatsApp</h3>
+        <p id="numero">+58 424 930 9160</p>
+        <button class="copiar" id="copiar" type="button">Copiar número</button>
+      </div>
+      <div>
+        <h3>Instagram</h3>
+        <p><a href="https://www.instagram.com/omshopve" target="_blank" rel="noopener">@omshopve</a></p>
+      </div>
+      <div>
+        <h3>Tienda</h3>
+        <p>Próximamente nueva dirección</p>
+        <p class="sub">Muy pronto te contamos dónde encontrarnos.</p>
+      </div>
+    </div>
+    <p class="firma">OM SHOP</p>
+  </div>
+</footer>
+
+<script>
+var WA="584249309160";
+var ICONO_WA='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>';
+var COLORES={Negro:"#111111",Marrón:"#4A3326",Rosa:"#E7B6BF"};
+// [ref, nombre, categoría, tallas, precio, colores]
+var P=[
+ [1,"Jeans","jeans",["34"],75,[]],
+ [2,"Cazadora Bomber","chaquetas",["S","XS"],55,["Negro","Marrón"]],
+ [3,"Jeans wide leg","jeans",["34"],70,[]],
+ [4,"Braga hombreras","vestidos",["S","XS"],110,[]],
+ [5,"Bodys espalda descubierta","tops",["S","M"],40,[]],
+ [6,"Blazer","chaquetas",["S"],115,[]],
+ [7,"Tops de poliamida","tops",null,null,"varios"],
+ [8,"Mono corto","vestidos",["XS"],115,[]],
+ [9,"Corset","tops",["S"],50,["Rosa","Negro"]],
+ [10,"Vestido blanco","vestidos",["S"],70,[]],
+ [11,"Bodys al hombro","tops",null,40,"varios"],
+ [12,"Corset flores","tops",["S"],55,[]],
+ [13,"Cazadora lunares","chaquetas",["Única"],65,[]],
+ [14,"Camisa lunares","tops",["XS"],35,[]],
+ [15,"Jeans","jeans",["34","36"],75,[]],
+ [16,"Vestido","vestidos",["S"],60,["Negro","Rosa"]],
+ [17,"Mom fit tiro alto","jeans",["34"],65,[]],
+ [18,"Bodys","tops",null,38,"varios"],
+ [19,"Vestido hombreras","vestidos",["XS"],80,[]],
+ [20,"Baggy fit","jeans",["34"],80,[]]
+].map(function(r){return{id:r[0],nombre:r[1],cat:r[2],tallas:r[3],precio:r[4],colores:r[5],
+  ref:String(r[0]).padStart(2,"0"),foto:"catalogo/om-"+String(r[0]).padStart(2,"0")+".jpg"};});
+
+// Orden editorial: la primera pieza de cada categoría va en grande
+var CATS=[
+ {id:"vestidos",nombre:"Vestidos y monos",orden:[16,4,10,8,19]},
+ {id:"jeans",nombre:"Jeans",orden:[3,1,15,17,20]},
+ {id:"tops",nombre:"Tops y bodys",orden:[9,5,7,11,12,14,18]},
+ {id:"chaquetas",nombre:"Chaquetas",orden:[6,2,13]}
+];
+function porId(id){return P[id-1];}
+
+/* Portada */
+var SETS=[[6,16,2],[3,13,11],[4,19,8],[12,10,18]];
+var diapos=document.getElementById("diapos"),barras=document.getElementById("barras");
+diapos.innerHTML=SETS.map(function(s,i){
+  return '<div class="diapo'+(i===0?' activa':'')+'">'+s.map(function(id,k){
+    return '<figure><img src="'+porId(id).foto+'" alt="'+porId(id).nombre+'"'+(i===0&&k===0?'':' loading="lazy"')+'></figure>';}).join("")+'</div>';
+}).join("");
+barras.innerHTML=SETS.map(function(_,i){return '<button type="button" aria-label="Ver imagen '+(i+1)+'"'+(i===0?' class="on"':'')+'><i></i></button>';}).join("");
+var actual=0,temporizador=null,quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function ir(n){
+  var d=diapos.children,b=barras.children;
+  d[actual].classList.remove("activa");b[actual].classList.remove("on");
+  actual=(n+SETS.length)%SETS.length;
+  d[actual].classList.add("activa");void b[actual].offsetWidth;b[actual].classList.add("on");
+  document.getElementById("num").textContent=String(actual+1).padStart(2,"0")+" / "+String(SETS.length).padStart(2,"0");
+  reiniciar();
+}
+function reiniciar(){clearTimeout(temporizador);if(!quieto)temporizador=setTimeout(function(){ir(actual+1);},5500);}
+barras.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;ir(Array.prototype.indexOf.call(barras.children,b));});
+reiniciar();
+
+/* Cinta */
+var frases=["Nueva colección","OM Shop","Pedidos por WhatsApp","@omshopve","Próximamente nueva dirección"];
+var una=frases.map(function(f){return "<span>"+f+"</span>";}).join("");
+document.getElementById("cinta").innerHTML=una+una+una+una;
+
+/* Utilidades de producto */
+function precioTxt(p){return p.precio==null?"Consultar precio":p.precio+" $";}
+function tallasTxt(p){return p.tallas?("Talla "+p.tallas.join(" · ")):"Tallas a consultar";}
+function waLink(p){
+  var t="Hola OM Shop, me interesa este producto: "+p.nombre+" (Ref. "+p.ref+")";
+  if(p.tallas&&p.tallas.length===1) t+=", talla "+p.tallas[0];
+  if(p.precio!=null) t+=", "+p.precio+" $";
+  t+=". "+(p.tallas?"¿Está disponible?":"¿Qué tallas y colores tienen disponibles?");
+  return "https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+}
+function colores(p){
+  if(p.colores==="varios") return '<span class="tallas">Varios colores</span>';
+  if(!p.colores.length) return "";
+  return '<span class="colores" aria-label="Colores: '+p.colores.join(", ")+'">'+p.colores.map(function(c){return '<i class="punto" style="background:'+COLORES[c]+'" title="'+c+'"></i>';}).join("")+'</span>';
+}
+function tarjeta(p,grande){
+  return '<article class="pieza'+(grande?' grande':'')+'">'+
+    '<div class="foto"><img src="'+p.foto+'" alt="'+p.nombre+'" loading="lazy" width="565" height="849"><span class="ref">REF. '+p.ref+'</span></div>'+
+    '<div class="datos"><h3 class="nombre">'+p.nombre+'</h3>'+
+      '<div class="meta"><span class="tallas">'+tallasTxt(p)+'</span>'+colores(p)+'</div>'+
+      '<div class="meta"><span class="precio">'+precioTxt(p)+'</span></div></div>'+
+    '<a class="quiero" href="'+waLink(p)+'" target="_blank" rel="noopener">'+ICONO_WA+(p.tallas?"Lo quiero":"Consultar talla")+'</a>'+
+  '</article>';
+}
+
+/* Categorías y secciones */
+document.getElementById("cats").innerHTML='<a href="#coleccion" class="on" data-cat="todo">Todo<small>'+P.length+'</small></a>'+
+  CATS.map(function(c){return '<a href="#'+c.id+'" data-cat="'+c.id+'">'+c.nombre+'<small>'+c.orden.length+'</small></a>';}).join("");
+
+var html="";
+CATS.forEach(function(c,i){
+  html+='<section class="seccion" id="'+c.id+'" aria-labelledby="t-'+c.id+'">'+
+    '<div class="palabra"><h2 id="t-'+c.id+'" data-dir="'+(i%2?1:-1)+'">'+c.nombre+'<em>'+String(c.orden.length).padStart(2,"0")+' piezas</em></h2></div>'+
+    '<div class="envoltura"><div class="rejilla">'+c.orden.map(function(id,k){return tarjeta(porId(id),k===0);}).join("")+'</div></div></section>';
+  if(i===1){
+    var fotos=P.map(function(p){return '<img src="'+p.foto+'" alt="" loading="lazy">';}).join("");
+    html+='<section class="lookbook" aria-label="Lookbook"><div class="envoltura"><h2>Lookbook</h2><p>Toda la colección</p></div><div class="tira" aria-hidden="true">'+fotos+fotos+'</div></section>';
+  }
+});
+document.getElementById("secciones").innerHTML=html;
+
+/* Aparición al hacer scroll */
+var piezas=document.querySelectorAll(".pieza");
+if("IntersectionObserver" in window && !quieto){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visto");io.unobserve(e.target);}});},{rootMargin:"0px 0px -8% 0px"});
+  piezas.forEach(function(p){io.observe(p);});
+}else{piezas.forEach(function(p){p.classList.add("visto");});}
+
+/* Palabras gigantes que se deslizan, encabezado y categoría activa */
+var palabras=document.querySelectorAll(".palabra h2"),cab=document.getElementById("cabecera"),enlaces=document.querySelectorAll(".cat-in a"),pendiente=false;
+function alDesplazar(){
+  pendiente=false;
+  var vh=innerHeight;
+  cab.classList.toggle("solida",scrollY>vh*0.6);
+  if(!quieto){
+    palabras.forEach(function(h){
+      var r=h.getBoundingClientRect(); if(r.bottom<-200||r.top>vh+200) return;
+      var avance=(vh-r.top)/(vh+r.height);
+      var dir=+h.dataset.dir;
+      h.style.transform="translateX("+((dir<0?(8-avance*30):(-22+avance*30)))+"%)";
+    });
+  }
+  var activa="todo";
+  CATS.forEach(function(c){var s=document.getElementById(c.id).getBoundingClientRect();if(s.top<vh*0.4)activa=c.id;});
+  enlaces.forEach(function(a){a.classList.toggle("on",a.dataset.cat===activa);});
+}
+addEventListener("scroll",function(){if(!pendiente){pendiente=true;requestAnimationFrame(alDesplazar);}},{passive:true});
+addEventListener("resize",alDesplazar);
+alDesplazar();
+
+/* Copiar número */
+document.getElementById("copiar").addEventListener("click",function(){
+  var b=this;
+  function ok(){b.textContent="Número copiado";setTimeout(function(){b.textContent="Copiar número";},2000);}
+  function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById("numero"));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Número seleccionado";}
+  try{navigator.clipboard.writeText("+584249309160").then(ok,sel);}catch(err){sel();}
+});
+</script>
+
+</html>
