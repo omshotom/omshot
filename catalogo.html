@@ -131,6 +131,9 @@ a{color:inherit}
 .pie p{margin:0;font-size:15px;line-height:1.6;font-weight:300}
 .pie .sub{color:#9C958B;font-size:13px}
 .copiar{appearance:none;background:none;border:0;color:#9C958B;cursor:pointer;font:500 10.5px/1 var(--texto);letter-spacing:.22em;text-transform:uppercase;padding:8px 0;text-decoration:underline;text-underline-offset:4px}
+.credito{margin:22px 0 0;font-size:11px;letter-spacing:.14em;color:#9C958B}
+.credito a{color:#fff;text-decoration:none;font-weight:500}
+.credito a:hover{color:var(--champan)}
 .firma{margin:44px 0 0;font-family:var(--display);font-size:clamp(60px,16vw,200px);line-height:.85;color:#26231F}
 
 @media (prefers-reduced-motion:reduce){
@@ -188,9 +191,11 @@ a{color:inherit}
         <h3>Tienda</h3>
         <p>Próximamente nueva dirección</p>
         <p class="sub">Muy pronto te contamos dónde encontrarnos.</p>
+        <p class="sub">RIF V-265173760</p>
       </div>
     </div>
     <p class="firma">OM SHOP</p>
+    <p class="credito">Desarrollado por Veneiatech Germany · <a href="https://veneiatech.de" target="_blank" rel="noopener">veneiatech.de</a></p>
   </div>
 </footer>
 
@@ -221,7 +226,7 @@ var P=[
  [19,"Vestido hombreras","vestidos",["XS"],80,[]],
  [20,"Baggy fit","jeans",["34"],80,[]]
 ].map(function(r){return{id:r[0],nombre:r[1],cat:r[2],tallas:r[3],precio:r[4],colores:r[5],
-  ref:String(r[0]).padStart(2,"0"),foto:"catalogo/om-"+String(r[0]).padStart(2,"0")+".jpg"};});
+  ref:String(r[0]).padStart(2,"0"),foto:"om-"+String(r[0]).padStart(2,"0")+".jpg"};});
 
 // Orden editorial: la primera pieza de cada categoría va en grande
 var CATS=[

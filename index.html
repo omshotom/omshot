@@ -94,7 +94,7 @@ a{color:inherit}
 .cinta span{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;font-weight:500;padding-right:36px}
 .cinta span::after{content:"✦";color:var(--champan);margin-left:36px}
 @keyframes correr{to{transform:translateX(-50%)}}
-.accesos{list-style:none;margin:0;padding:0 20px 18px}
+.accesos{list-style:none;margin:0;padding:0 20px 8px}
 .accesos li+li{border-top:1px solid var(--linea)}
 .acceso{display:flex;align-items:center;gap:14px;text-decoration:none;padding:15px 0;min-width:0}
 .acceso .ic{width:38px;height:38px;flex:none;display:grid;place-items:center;border:1px solid var(--linea);border-radius:50%}
@@ -109,6 +109,10 @@ a{color:inherit}
 .acceso.principal small{color:#B9B2A6}
 .acceso.principal + li, li:has(.principal) + li{border-top:0}
 .acceso.estatico{cursor:default}
+.credito{margin:0;padding:0 20px 16px;font-size:9.5px;letter-spacing:.14em;color:var(--gris);text-align:center}
+.credito a{text-decoration:none;color:var(--tinta);font-weight:500}
+.credito a:hover{color:var(--champan-osc)}
+.rif{margin:0;padding:0 20px 6px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gris);text-align:center}
 
 /* Accesos con luz y movimiento */
 .accesos li{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .9s var(--suave)}
@@ -155,10 +159,10 @@ a.acceso:hover b{color:transparent;background-position:0 0}
 
 <main class="tarjeta" id="tarjeta">
   <div class="fotos" id="fotos" aria-hidden="true">
-    <figure class="on"><img src="catalogo/om-06.jpg" alt=""></figure>
-    <figure><img src="catalogo/om-16.jpg" alt="" loading="lazy"></figure>
-    <figure><img src="catalogo/om-10.jpg" alt="" loading="lazy"></figure>
-    <figure><img src="catalogo/om-03.jpg" alt="" loading="lazy"></figure>
+    <figure class="on"><img src="om-06.jpg" alt=""></figure>
+    <figure><img src="om-16.jpg" alt="" loading="lazy"></figure>
+    <figure><img src="om-10.jpg" alt="" loading="lazy"></figure>
+    <figure><img src="om-03.jpg" alt="" loading="lazy"></figure>
   </div>
 
   <header class="rotulo"><b>OM SHOP</b></header>
@@ -186,6 +190,8 @@ a.acceso:hover b{color:transparent;background-position:0 0}
         <li><a class="acceso" href="https://www.instagram.com/omshopve" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg></span><span class="tx"><b>Instagram</b><small>@omshopve</small></span><span class="fl" aria-hidden="true">→</span></a></li>
         <li><div class="acceso estatico"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span class="tx"><b>Tienda</b><small>Próximamente nueva dirección</small></span></div></li>
       </ul>
+      <p class="rif">RIF V-265173760</p>
+      <p class="credito">Desarrollado por Veneiatech Germany · <a href="https://veneiatech.de" target="_blank" rel="noopener">veneiatech.de</a></p>
     </div>
   </section>
 </main>
