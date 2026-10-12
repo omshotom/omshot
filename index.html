@@ -10,7 +10,7 @@
 [hidden]{display:none!important}
 html,body{margin:0}
 img{max-width:100%}
-/* Layout: una tarjeta del alto de la pantalla; detrás de unas puertas de vidrio corredizas vive una portada de revista con fotos gigantes en movimiento, y al entrar sube una hoja blanca con los accesos */
+/* Layout: una tarjeta del alto de la pantalla que abre como una historia de Instagram (fotos a pantalla completa, barras de progreso, toques a los lados); al deslizar para entrar, sube una hoja blanca con los accesos */
 :root{
   --noche:#0B0A09;
   --papel:#FFFFFF;
@@ -24,53 +24,59 @@ img{max-width:100%}
   --abrir:1.7s;
   --curva:cubic-bezier(.72,0,.18,1);
   --suave:cubic-bezier(.2,.7,.2,1);
-  color-scheme:dark;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--noche);color:#fff;font-family:var(--texto);-webkit-font-smoothing:antialiased;
+body{background:#F2EFEA;color:#fff;font-family:var(--texto);-webkit-font-smoothing:antialiased;
   padding-inline:16px;display:grid;place-items:center;overflow-x:hidden}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--champan);outline-offset:3px}
 
 .tarjeta{position:relative;width:100%;max-width:440px;height:calc(100% - 32px);max-height:880px;min-height:640px;margin-block:16px;
-  overflow:hidden;background:var(--noche);box-shadow:0 30px 90px rgba(0,0,0,.7);border:1px solid rgba(201,180,138,.25)}
-@media (max-width:480px){body{padding-inline:0}.tarjeta{max-width:none;height:100%;margin-block:0;border:0;min-height:600px}}
+  overflow:hidden;background:var(--noche);box-shadow:0 30px 80px rgba(60,48,30,.22);border-radius:22px}
+@media (max-width:480px){body{padding-inline:0}.tarjeta{max-width:none;height:100%;margin-block:0;border:0;border-radius:0;min-height:600px}}
 
-/* Fotos de fondo en movimiento */
-.fotos{position:absolute;inset:0;transition:filter var(--abrir) var(--curva);filter:brightness(.42) saturate(.75)}
-.fotos figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity 1.4s ease}
+/* Fotos de la colección (historias) */
+.fotos{position:absolute;inset:0;background:#E9E6E1}
+.fotos figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .7s ease}
 .fotos figure.on{opacity:1}
-.fotos img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.15);transition:transform 7s linear}
+.fotos img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.1);transition:transform 5s linear}
 .fotos figure.on img{transform:scale(1)}
-.fotos::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,0) 45%,rgba(0,0,0,.55) 100%)}
-.abierta .fotos{filter:none}
+.fotos::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 52%,rgba(0,0,0,.6) 100%)}
 
-/* Rótulo */
-.rotulo{position:absolute;left:0;right:0;top:0;z-index:5;padding:20px 16px 14px;text-align:center;transition:opacity .6s,transform .8s var(--suave)}
-.rotulo b{font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:.34em;padding-left:.34em}
-.abierta .rotulo{opacity:0;transform:translateY(-16px);pointer-events:none}
-
-/* Puertas de vidrio corredizas */
-.puertas{position:absolute;left:14px;right:14px;top:64px;bottom:104px;z-index:4;overflow:hidden;border:3px solid #2A2520;box-shadow:inset 0 0 0 1px rgba(201,180,138,.35);transition:border-color .6s .9s,box-shadow .6s .9s}
-.abierta .puertas{border-color:transparent;box-shadow:none;pointer-events:none}
-.puerta{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;transition:transform var(--abrir) var(--curva);
-  background:linear-gradient(112deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.02) 22%,rgba(255,255,255,.16) 26%,rgba(255,255,255,.03) 31%,rgba(255,255,255,0) 60%,rgba(255,255,255,.07) 100%),linear-gradient(to bottom,rgba(30,34,36,.28),rgba(16,18,20,.5));
-  -webkit-backdrop-filter:blur(3px) saturate(115%);backdrop-filter:blur(3px) saturate(115%);border:2px solid var(--champan);box-shadow:inset 0 0 30px rgba(0,0,0,.35)}
-.izq{left:0;border-right-width:1px}.der{right:0;border-left-width:1px}
-.grabado{position:absolute;top:50%;width:200%;transform:translateY(-50%);display:flex;justify-content:center;pointer-events:none}
-.izq .grabado{left:0}.der .grabado{right:0}
-.grabado svg{width:58%;height:auto}
-.tirador{position:absolute;top:30%;height:40%;width:5px;border-radius:3px;background:linear-gradient(90deg,#8C7448,#F1DFB6 45%,#A88B57);box-shadow:0 0 10px rgba(201,180,138,.35)}
-.izq .tirador{right:14px}.der .tirador{left:14px}
-.abierta .izq{transform:translateX(-101%)}.abierta .der{transform:translateX(101%)}
-
-/* Acera */
-.acera{position:absolute;left:0;right:0;bottom:0;z-index:5;height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .5s,transform .7s var(--suave)}
-.entrar{appearance:none;cursor:pointer;font:500 12px/1 var(--texto);letter-spacing:.36em;padding:17px 36px 17px 40px;text-transform:uppercase;color:var(--tinta);background:#fff;border:0;transition:background .3s}
-.entrar:hover{background:var(--champan)}
-.acera p{margin:0;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.abierta .acera{opacity:0;transform:translateY(20px);pointer-events:none}
+/* Interfaz tipo Stories */
+.historia{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:space-between;transition:opacity .5s ease}
+.abierta .historia{opacity:0;pointer-events:none}
+.cabeza{padding:12px 12px 0;display:flex;flex-direction:column;gap:12px;position:relative;z-index:2;transition:transform .6s var(--suave)}
+.abierta .cabeza{transform:translateY(-30px)}
+.progreso{display:flex;gap:4px}
+.progreso span{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.38);overflow:hidden}
+.progreso i{display:block;height:100%;background:#fff;transform:scaleX(0);transform-origin:left}
+.perfil{display:flex;align-items:center;gap:10px;min-width:0}
+.aro{position:relative;width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center}
+.aro::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#F4E4BE,#C9B48A,#8C7448,#E8D3A6,#F4E4BE);animation:girar 6s linear infinite}
+.aro svg{position:relative;width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-sizing:content-box;display:block}
+.perfil-tx{display:flex;flex-direction:column;gap:1px;min-width:0;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+.perfil-tx b{font-size:13.5px;font-weight:600;letter-spacing:.02em}
+.perfil-tx small{font-size:11.5px;opacity:.85}
+.verificado{display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;background:var(--champan);color:#111;font-size:9px;margin-left:4px;vertical-align:1px}
+.toques{position:absolute;inset:0;display:flex;z-index:1}
+.toques button{appearance:none;border:0;background:transparent;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.toques .atras{flex:0 0 32%}.toques .adelante{flex:1}
+.pie-hist{position:relative;z-index:2;padding:0 18px 22px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;transition:transform .6s var(--suave)}
+.abierta .pie-hist{transform:translateY(40px)}
+.marca-hist{font-family:var(--display);font-weight:400;color:#fff;font-size:clamp(52px,15vw,66px);line-height:.9;letter-spacing:.06em;text-shadow:0 4px 30px rgba(0,0,0,.3)}
+.etiqueta{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);color:var(--tinta);padding:9px 14px 9px 11px;border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.04em;box-shadow:0 8px 24px rgba(0,0,0,.18);transition:opacity .35s,transform .45s var(--suave)}
+.etiqueta svg{width:15px;height:15px;flex:none}
+.etiqueta b{font-weight:600}
+.etiqueta.cambia{opacity:0;transform:translateY(8px) scale(.96)}
+.deslizar{appearance:none;cursor:pointer;border:0;background:none;color:#fff;font:500 11px/1 var(--texto);letter-spacing:.34em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 18px 2px}
+.deslizar .flecha{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:subir 1.8s ease-in-out infinite}
+.deslizar .flecha svg{width:18px;height:18px}
+.deslizar:hover .flecha{background:#fff;color:var(--tinta)}
+@keyframes subir{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.pausa .fotos figure.on img{transition-duration:0s}
 
 /* Contenido al entrar */
 .contenido{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;pointer-events:none}
@@ -83,8 +89,8 @@ a{color:inherit}
 .bienvenidos{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(54px,15vw,72px);line-height:.9}
 .ceja{font-size:10.5px;letter-spacing:.42em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;gap:12px}
 .ceja .barras{display:flex;gap:5px}
-.ceja .barras i{display:block;width:22px;height:2px;background:rgba(255,255,255,.35);position:relative;overflow:hidden}
-.ceja .barras i.on::after{content:"";position:absolute;inset:0;background:#fff;transform-origin:left;animation:llenar 5s linear forwards}
+.ceja .barras i{display:block;width:16px;height:2px;background:rgba(255,255,255,.35);position:relative;overflow:hidden}
+.ceja .barras i.on{background:#fff}
 @keyframes llenar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 .hoja{background:var(--papel);color:var(--tinta);transform:translateY(102%);transition:transform 1.1s var(--suave) 1.2s}
@@ -162,25 +168,35 @@ a.acceso:hover b{color:transparent;background-position:0 0}
     <figure class="on"><img src="om-06.jpg" alt=""></figure>
     <figure><img src="om-16.jpg" alt="" loading="lazy"></figure>
     <figure><img src="om-10.jpg" alt="" loading="lazy"></figure>
+    <figure><img src="om-02.jpg" alt="" loading="lazy"></figure>
+    <figure><img src="om-09.jpg" alt="" loading="lazy"></figure>
     <figure><img src="om-03.jpg" alt="" loading="lazy"></figure>
   </div>
 
-  <header class="rotulo"><b>OM SHOP</b></header>
-
-  <div class="puertas" aria-hidden="true">
-    <div class="puerta izq"><div class="grabado"><svg viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="490" fill="none" stroke="rgba(255,255,255,.24)" stroke-width="6"/><g transform="translate(70.00 569.56) scale(0.19734)"><g fill="rgba(255,255,255,.22)"><path d="M33 -353Q33 -456 81.5 -538.0Q130 -620 212.5 -666.0Q295 -712 394 -712Q493 -712 575.5 -666.0Q658 -620 705.5 -538.0Q753 -456 753 -353Q753 -250 705.0 -167.5Q657 -85 575.0 -39.0Q493 7 394 7Q295 7 212.5 -39.0Q130 -85 81.5 -167.5Q33 -250 33 -353ZM579 -353Q579 -446 528.5 -501.5Q478 -557 394 -557Q309 -557 258.5 -502.0Q208 -447 208 -353Q208 -260 258.5 -204.5Q309 -149 394 -149Q478 -149 528.5 -205.0Q579 -261 579 -353Z"/><path d="M1643 -702V0H1472V-421L1315 0H1177L1019 -422V0H848V-702H1050L1247 -216L1442 -702Z"/></g><g fill="rgba(255,255,255,.22)"><path d="M1771 -186H1868Q1873 -137 1908.5 -103.5Q1944 -70 2012 -70Q2077 -70 2114.5 -102.5Q2152 -135 2152 -186Q2152 -226 2130.0 -251.0Q2108 -276 2075.0 -289.0Q2042 -302 1986 -317Q1917 -335 1875.5 -353.0Q1834 -371 1804.5 -409.5Q1775 -448 1775 -513Q1775 -570 1804.0 -614.0Q1833 -658 1885.5 -682.0Q1938 -706 2006 -706Q2104 -706 2166.5 -657.0Q2229 -608 2237 -527H2137Q2132 -567 2095.0 -597.5Q2058 -628 1997 -628Q1940 -628 1904.0 -598.5Q1868 -569 1868 -516Q1868 -478 1889.5 -454.0Q1911 -430 1942.5 -417.5Q1974 -405 2031 -389Q2100 -370 2142.0 -351.5Q2184 -333 2214.0 -294.5Q2244 -256 2244 -190Q2244 -139 2217.0 -94.0Q2190 -49 2137.0 -21.0Q2084 7 2012 7Q1943 7 1888.5 -17.5Q1834 -42 1803.0 -85.5Q1772 -129 1771 -186Z"/><path d="M2915 -697V0H2824V-316H2469V0H2378V-697H2469V-391H2824V-697Z"/><path d="M3036 -349Q3036 -451 3082.5 -532.5Q3129 -614 3209.0 -659.5Q3289 -705 3386 -705Q3484 -705 3564.0 -659.5Q3644 -614 3690.0 -533.0Q3736 -452 3736 -349Q3736 -246 3690.0 -165.0Q3644 -84 3564.0 -38.5Q3484 7 3386 7Q3289 7 3209.0 -38.5Q3129 -84 3082.5 -165.5Q3036 -247 3036 -349ZM3643 -349Q3643 -433 3609.5 -495.5Q3576 -558 3518.0 -592.0Q3460 -626 3386 -626Q3312 -626 3254.0 -592.0Q3196 -558 3162.5 -495.5Q3129 -433 3129 -349Q3129 -266 3162.5 -203.0Q3196 -140 3254.5 -106.0Q3313 -72 3386 -72Q3459 -72 3517.5 -106.0Q3576 -140 3609.5 -203.0Q3643 -266 3643 -349Z"/><path d="M4081 -291H3947V0H3856V-697H4081Q4199 -697 4260.5 -640.0Q4322 -583 4322 -493Q4322 -406 4262.5 -348.5Q4203 -291 4081 -291ZM4229 -493Q4229 -622 4081 -622H3947V-366H4081Q4157 -366 4193.0 -399.0Q4229 -432 4229 -493Z"/></g></g></svg></div><i class="tirador"></i></div>
-    <div class="puerta der"><div class="grabado"><svg viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="490" fill="none" stroke="rgba(255,255,255,.24)" stroke-width="6"/><g transform="translate(70.00 569.56) scale(0.19734)"><g fill="rgba(255,255,255,.22)"><path d="M33 -353Q33 -456 81.5 -538.0Q130 -620 212.5 -666.0Q295 -712 394 -712Q493 -712 575.5 -666.0Q658 -620 705.5 -538.0Q753 -456 753 -353Q753 -250 705.0 -167.5Q657 -85 575.0 -39.0Q493 7 394 7Q295 7 212.5 -39.0Q130 -85 81.5 -167.5Q33 -250 33 -353ZM579 -353Q579 -446 528.5 -501.5Q478 -557 394 -557Q309 -557 258.5 -502.0Q208 -447 208 -353Q208 -260 258.5 -204.5Q309 -149 394 -149Q478 -149 528.5 -205.0Q579 -261 579 -353Z"/><path d="M1643 -702V0H1472V-421L1315 0H1177L1019 -422V0H848V-702H1050L1247 -216L1442 -702Z"/></g><g fill="rgba(255,255,255,.22)"><path d="M1771 -186H1868Q1873 -137 1908.5 -103.5Q1944 -70 2012 -70Q2077 -70 2114.5 -102.5Q2152 -135 2152 -186Q2152 -226 2130.0 -251.0Q2108 -276 2075.0 -289.0Q2042 -302 1986 -317Q1917 -335 1875.5 -353.0Q1834 -371 1804.5 -409.5Q1775 -448 1775 -513Q1775 -570 1804.0 -614.0Q1833 -658 1885.5 -682.0Q1938 -706 2006 -706Q2104 -706 2166.5 -657.0Q2229 -608 2237 -527H2137Q2132 -567 2095.0 -597.5Q2058 -628 1997 -628Q1940 -628 1904.0 -598.5Q1868 -569 1868 -516Q1868 -478 1889.5 -454.0Q1911 -430 1942.5 -417.5Q1974 -405 2031 -389Q2100 -370 2142.0 -351.5Q2184 -333 2214.0 -294.5Q2244 -256 2244 -190Q2244 -139 2217.0 -94.0Q2190 -49 2137.0 -21.0Q2084 7 2012 7Q1943 7 1888.5 -17.5Q1834 -42 1803.0 -85.5Q1772 -129 1771 -186Z"/><path d="M2915 -697V0H2824V-316H2469V0H2378V-697H2469V-391H2824V-697Z"/><path d="M3036 -349Q3036 -451 3082.5 -532.5Q3129 -614 3209.0 -659.5Q3289 -705 3386 -705Q3484 -705 3564.0 -659.5Q3644 -614 3690.0 -533.0Q3736 -452 3736 -349Q3736 -246 3690.0 -165.0Q3644 -84 3564.0 -38.5Q3484 7 3386 7Q3289 7 3209.0 -38.5Q3129 -84 3082.5 -165.5Q3036 -247 3036 -349ZM3643 -349Q3643 -433 3609.5 -495.5Q3576 -558 3518.0 -592.0Q3460 -626 3386 -626Q3312 -626 3254.0 -592.0Q3196 -558 3162.5 -495.5Q3129 -433 3129 -349Q3129 -266 3162.5 -203.0Q3196 -140 3254.5 -106.0Q3313 -72 3386 -72Q3459 -72 3517.5 -106.0Q3576 -140 3609.5 -203.0Q3643 -266 3643 -349Z"/><path d="M4081 -291H3947V0H3856V-697H4081Q4199 -697 4260.5 -640.0Q4322 -583 4322 -493Q4322 -406 4262.5 -348.5Q4203 -291 4081 -291ZM4229 -493Q4229 -622 4081 -622H3947V-366H4081Q4157 -366 4193.0 -399.0Q4229 -432 4229 -493Z"/></g></g></svg></div><i class="tirador"></i></div>
-  </div>
-
-  <div class="acera">
-    <button class="entrar" id="entrar" type="button">Entrar</button>
-  </div>
+  <section class="historia" id="historia" aria-label="Nueva colección de OM Shop">
+    <div class="cabeza">
+      <div class="progreso" id="progreso" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span></div>
+      <div class="perfil">
+        <span class="aro"><svg viewBox="0 0 1000 1000" aria-hidden="true"><circle cx="500" cy="500" r="500" fill="#EEEEEE"/><g transform="translate(70.00 569.56) scale(0.19734)"><g fill="#3A3D3E"><path d="M33 -353Q33 -456 81.5 -538.0Q130 -620 212.5 -666.0Q295 -712 394 -712Q493 -712 575.5 -666.0Q658 -620 705.5 -538.0Q753 -456 753 -353Q753 -250 705.0 -167.5Q657 -85 575.0 -39.0Q493 7 394 7Q295 7 212.5 -39.0Q130 -85 81.5 -167.5Q33 -250 33 -353ZM579 -353Q579 -446 528.5 -501.5Q478 -557 394 -557Q309 -557 258.5 -502.0Q208 -447 208 -353Q208 -260 258.5 -204.5Q309 -149 394 -149Q478 -149 528.5 -205.0Q579 -261 579 -353Z"/><path d="M1643 -702V0H1472V-421L1315 0H1177L1019 -422V0H848V-702H1050L1247 -216L1442 -702Z"/></g><g fill="#3A3D3E"><path d="M1771 -186H1868Q1873 -137 1908.5 -103.5Q1944 -70 2012 -70Q2077 -70 2114.5 -102.5Q2152 -135 2152 -186Q2152 -226 2130.0 -251.0Q2108 -276 2075.0 -289.0Q2042 -302 1986 -317Q1917 -335 1875.5 -353.0Q1834 -371 1804.5 -409.5Q1775 -448 1775 -513Q1775 -570 1804.0 -614.0Q1833 -658 1885.5 -682.0Q1938 -706 2006 -706Q2104 -706 2166.5 -657.0Q2229 -608 2237 -527H2137Q2132 -567 2095.0 -597.5Q2058 -628 1997 -628Q1940 -628 1904.0 -598.5Q1868 -569 1868 -516Q1868 -478 1889.5 -454.0Q1911 -430 1942.5 -417.5Q1974 -405 2031 -389Q2100 -370 2142.0 -351.5Q2184 -333 2214.0 -294.5Q2244 -256 2244 -190Q2244 -139 2217.0 -94.0Q2190 -49 2137.0 -21.0Q2084 7 2012 7Q1943 7 1888.5 -17.5Q1834 -42 1803.0 -85.5Q1772 -129 1771 -186Z"/><path d="M2915 -697V0H2824V-316H2469V0H2378V-697H2469V-391H2824V-697Z"/><path d="M3036 -349Q3036 -451 3082.5 -532.5Q3129 -614 3209.0 -659.5Q3289 -705 3386 -705Q3484 -705 3564.0 -659.5Q3644 -614 3690.0 -533.0Q3736 -452 3736 -349Q3736 -246 3690.0 -165.0Q3644 -84 3564.0 -38.5Q3484 7 3386 7Q3289 7 3209.0 -38.5Q3129 -84 3082.5 -165.5Q3036 -247 3036 -349ZM3643 -349Q3643 -433 3609.5 -495.5Q3576 -558 3518.0 -592.0Q3460 -626 3386 -626Q3312 -626 3254.0 -592.0Q3196 -558 3162.5 -495.5Q3129 -433 3129 -349Q3129 -266 3162.5 -203.0Q3196 -140 3254.5 -106.0Q3313 -72 3386 -72Q3459 -72 3517.5 -106.0Q3576 -140 3609.5 -203.0Q3643 -266 3643 -349Z"/><path d="M4081 -291H3947V0H3856V-697H4081Q4199 -697 4260.5 -640.0Q4322 -583 4322 -493Q4322 -406 4262.5 -348.5Q4203 -291 4081 -291ZM4229 -493Q4229 -622 4081 -622H3947V-366H4081Q4157 -366 4193.0 -399.0Q4229 -432 4229 -493Z"/></g></g></svg></span>
+        <span class="perfil-tx"><b>omshopve<span class="verificado" aria-hidden="true">✓</span></b><small>Nueva colección</small></span>
+      </div>
+    </div>
+    <div class="toques">
+      <button class="atras" id="atras" type="button" aria-label="Foto anterior"></button>
+      <button class="adelante" id="adelante" type="button" aria-label="Foto siguiente"></button>
+    </div>
+    <div class="pie-hist">
+      <div class="marca-hist">OM SHOP</div>
+      <span class="etiqueta" id="etiqueta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="etiqueta-tx"><b>Blazer</b> · 115 $</span></span>
+      <button class="deslizar" id="entrar" type="button"><span class="flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 14l6-6 6 6"/></svg></span>Desliza para entrar</button>
+    </div>
+  </section>
 
   <section class="contenido" aria-live="polite">
     <div class="arriba">
       <svg class="logo" viewBox="0 0 1000 1000" role="img" aria-label="OM Shop"><defs><radialGradient id="g" cx="42%" cy="35%" r="70%"><stop offset="0" stop-color="#F7F7F7"/><stop offset="1" stop-color="#E6E6E6"/></radialGradient></defs><circle cx="500" cy="500" r="500" fill="url(#g)"/><g transform="translate(70.00 569.56) scale(0.19734)"><g fill="#3A3D3E"><path d="M33 -353Q33 -456 81.5 -538.0Q130 -620 212.5 -666.0Q295 -712 394 -712Q493 -712 575.5 -666.0Q658 -620 705.5 -538.0Q753 -456 753 -353Q753 -250 705.0 -167.5Q657 -85 575.0 -39.0Q493 7 394 7Q295 7 212.5 -39.0Q130 -85 81.5 -167.5Q33 -250 33 -353ZM579 -353Q579 -446 528.5 -501.5Q478 -557 394 -557Q309 -557 258.5 -502.0Q208 -447 208 -353Q208 -260 258.5 -204.5Q309 -149 394 -149Q478 -149 528.5 -205.0Q579 -261 579 -353Z"/><path d="M1643 -702V0H1472V-421L1315 0H1177L1019 -422V0H848V-702H1050L1247 -216L1442 -702Z"/></g><g fill="#3A3D3E"><path d="M1771 -186H1868Q1873 -137 1908.5 -103.5Q1944 -70 2012 -70Q2077 -70 2114.5 -102.5Q2152 -135 2152 -186Q2152 -226 2130.0 -251.0Q2108 -276 2075.0 -289.0Q2042 -302 1986 -317Q1917 -335 1875.5 -353.0Q1834 -371 1804.5 -409.5Q1775 -448 1775 -513Q1775 -570 1804.0 -614.0Q1833 -658 1885.5 -682.0Q1938 -706 2006 -706Q2104 -706 2166.5 -657.0Q2229 -608 2237 -527H2137Q2132 -567 2095.0 -597.5Q2058 -628 1997 -628Q1940 -628 1904.0 -598.5Q1868 -569 1868 -516Q1868 -478 1889.5 -454.0Q1911 -430 1942.5 -417.5Q1974 -405 2031 -389Q2100 -370 2142.0 -351.5Q2184 -333 2214.0 -294.5Q2244 -256 2244 -190Q2244 -139 2217.0 -94.0Q2190 -49 2137.0 -21.0Q2084 7 2012 7Q1943 7 1888.5 -17.5Q1834 -42 1803.0 -85.5Q1772 -129 1771 -186Z"/><path d="M2915 -697V0H2824V-316H2469V0H2378V-697H2469V-391H2824V-697Z"/><path d="M3036 -349Q3036 -451 3082.5 -532.5Q3129 -614 3209.0 -659.5Q3289 -705 3386 -705Q3484 -705 3564.0 -659.5Q3644 -614 3690.0 -533.0Q3736 -452 3736 -349Q3736 -246 3690.0 -165.0Q3644 -84 3564.0 -38.5Q3484 7 3386 7Q3289 7 3209.0 -38.5Q3129 -84 3082.5 -165.5Q3036 -247 3036 -349ZM3643 -349Q3643 -433 3609.5 -495.5Q3576 -558 3518.0 -592.0Q3460 -626 3386 -626Q3312 -626 3254.0 -592.0Q3196 -558 3162.5 -495.5Q3129 -433 3129 -349Q3129 -266 3162.5 -203.0Q3196 -140 3254.5 -106.0Q3313 -72 3386 -72Q3459 -72 3517.5 -106.0Q3576 -140 3609.5 -203.0Q3643 -266 3643 -349Z"/><path d="M4081 -291H3947V0H3856V-697H4081Q4199 -697 4260.5 -640.0Q4322 -583 4322 -493Q4322 -406 4262.5 -348.5Q4203 -291 4081 -291ZM4229 -493Q4229 -622 4081 -622H3947V-366H4081Q4157 -366 4193.0 -399.0Q4229 -432 4229 -493Z"/></g></g></svg>
       <h1 class="bienvenidos">Bienvenidos</h1>
-      <span class="ceja">Nueva colección <span class="barras" id="barras"><i class="on"></i><i></i><i></i><i></i></span></span>
+      <span class="ceja">Nueva colección <span class="barras" id="barras"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span></span>
     </div>
     <div class="hoja">
       <div class="cinta" aria-hidden="true"><div class="cinta-in" id="cinta"></div></div>
@@ -199,19 +215,56 @@ a.acceso:hover b{color:transparent;background-position:0 0}
 <script>
 (function(){
   var t=document.getElementById("tarjeta"),quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var figs=document.querySelectorAll("#fotos figure"),barras=document.querySelectorAll("#barras i"),i=0;
+  var figs=document.querySelectorAll("#fotos figure"),barrasProg=document.querySelectorAll("#progreso i"),barras=document.querySelectorAll("#barras i");
+  var PIEZAS=[["Blazer","115 $"],["Vestido","60 $"],["Vestido blanco","70 $"],["Cazadora Bomber","55 $"],["Corset","50 $"],["Jeans wide leg","70 $"]];
+  var DUR=4200,i=0,trans=0,pausado=false,ultimo=null,etq=document.getElementById("etiqueta"),etqTx=document.getElementById("etiqueta-tx");
   var frases=["Nueva colección","OM Shop","Pedidos por WhatsApp","@omshopve"];
   var una=frases.map(function(f){return "<span>"+f+"</span>";}).join("");
   document.getElementById("cinta").innerHTML=una+una+una+una;
-  function siguiente(){
-    figs[i].classList.remove("on");barras[i].classList.remove("on");
-    i=(i+1)%figs.length;
-    figs[i].classList.add("on");void barras[i].offsetWidth;barras[i].classList.add("on");
+
+  function pintarBarras(){
+    for(var k=0;k<barrasProg.length;k++){
+      var v=k<i?1:(k>i?0:Math.min(trans/DUR,1));
+      barrasProg[k].style.transform="scaleX("+v+")";
+    }
   }
-  if(!quieto) setInterval(siguiente,5000);
-  document.getElementById("entrar").addEventListener("click",function(){
+  function ir(n){
+    figs[i].classList.remove("on");barras[i].classList.remove("on");
+    i=(n+figs.length)%figs.length;trans=0;
+    figs[i].classList.add("on");barras[i].classList.add("on");
+    etq.classList.add("cambia");
+    setTimeout(function(){etqTx.innerHTML="<b>"+PIEZAS[i][0]+"</b> · "+PIEZAS[i][1];etq.classList.remove("cambia");},300);
+    pintarBarras();
+  }
+  function cuadro(ts){
+    if(ultimo!=null && !pausado && !quieto){trans+=ts-ultimo;if(trans>=DUR){ir(i+1);}pintarBarras();}
+    ultimo=ts;requestAnimationFrame(cuadro);
+  }
+  requestAnimationFrame(cuadro);
+
+  /* Toques a los lados y mantener para pausar */
+  var mantener=null,fueLargo=false;
+  ["atras","adelante"].forEach(function(id){
+    var b=document.getElementById(id);
+    b.addEventListener("pointerdown",function(){fueLargo=false;mantener=setTimeout(function(){fueLargo=true;pausado=true;t.classList.add("pausa");},260);});
+    b.addEventListener("pointerup",function(){clearTimeout(mantener);if(fueLargo){pausado=false;t.classList.remove("pausa");}});
+    b.addEventListener("pointerleave",function(){clearTimeout(mantener);if(fueLargo){pausado=false;t.classList.remove("pausa");}});
+    b.addEventListener("click",function(){if(fueLargo){fueLargo=false;return;}ir(id==="atras"?i-1:i+1);});
+  });
+
+  /* Entrar: botón o deslizar hacia arriba */
+  function entrar(){
+    if(t.classList.contains("abierta"))return;
     t.classList.add("abierta");
     setTimeout(function(){var a=document.querySelector(".acceso.principal");if(a)a.focus({preventScroll:true});},2300);
+  }
+  document.getElementById("entrar").addEventListener("click",entrar);
+  var y0=null;
+  document.getElementById("historia").addEventListener("touchstart",function(e){y0=e.touches[0].clientY;},{passive:true});
+  document.getElementById("historia").addEventListener("touchend",function(e){if(y0!=null&&y0-e.changedTouches[0].clientY>60)entrar();y0=null;},{passive:true});
+  document.addEventListener("keydown",function(e){
+    if(t.classList.contains("abierta"))return;
+    if(e.key==="ArrowRight")ir(i+1);else if(e.key==="ArrowLeft")ir(i-1);else if(e.key==="ArrowUp")entrar();
   });
   document.querySelectorAll("a.acceso").forEach(function(a){
     a.addEventListener("pointerdown",function(e){
