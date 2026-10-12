@@ -24,18 +24,36 @@ img{max-width:100%}
   --abrir:1.7s;
   --curva:cubic-bezier(.72,0,.18,1);
   --suave:cubic-bezier(.2,.7,.2,1);
-  color-scheme:light;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{background:#F2EFEA;color:#fff;font-family:var(--texto);-webkit-font-smoothing:antialiased;
+body{background:radial-gradient(120% 90% at 50% 42%,#2B241C 0%,#141110 46%,#060505 100%);background-color:#060505;color:#fff;font-family:var(--texto);-webkit-font-smoothing:antialiased;
   padding-inline:16px;display:grid;place-items:center;overflow-x:hidden}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--champan);outline-offset:3px}
 
-.tarjeta{position:relative;width:100%;max-width:440px;height:calc(100% - 32px);max-height:880px;min-height:640px;margin-block:16px;
-  overflow:hidden;background:var(--noche);box-shadow:0 30px 80px rgba(60,48,30,.22);border-radius:22px}
-@media (max-width:480px){body{padding-inline:0}.tarjeta{max-width:none;height:100%;margin-block:0;border:0;border-radius:0;min-height:600px}}
+/* Vacío 3D: chispas de fondo, tarjeta flotando y luz que corre por el borde */
+#chispas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.escenario{position:relative;z-index:1;width:100%;max-width:440px;height:calc(100% - 48px);max-height:880px;min-height:600px;margin-block:24px;perspective:1400px;display:flex}
+.escenario::after{content:"";position:absolute;left:8%;right:8%;bottom:-30px;height:44px;border-radius:50%;background:radial-gradient(closest-side,rgba(232,206,150,.42),rgba(232,206,150,0));filter:blur(8px);animation:piso 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes piso{0%,100%{opacity:.55;transform:scaleX(.92)}50%{opacity:1;transform:scaleX(1.04)}}
+.flota{position:relative;flex:1;display:flex;transform-style:preserve-3d;animation:flotar 9s ease-in-out infinite}
+@keyframes flotar{0%,100%{transform:rotateX(2.5deg) rotateY(-3.5deg) translateY(0)}50%{transform:rotateX(-1.5deg) rotateY(3.5deg) translateY(-10px)}}
+.dentro .flota{animation-play-state:paused}
+.aura{position:relative;flex:1;display:flex;padding:2px;border-radius:26px;overflow:hidden;isolation:isolate;background:rgba(201,180,138,.28);
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s var(--suave);
+  box-shadow:0 50px 100px rgba(0,0,0,.75),0 0 70px rgba(232,206,150,.22)}
+.dentro .aura{--rx:0deg;--ry:0deg}
+.aura::before,.aura::after{content:"";position:absolute;left:50%;top:50%;width:1600px;height:1600px;margin:-800px 0 0 -800px;z-index:-1;pointer-events:none;
+  background:conic-gradient(from 0deg,transparent 0 60%,rgba(201,180,138,.25) 66%,#F4E4BE 71%,#FFFFFF 72.5%,#C9B48A 75%,transparent 82%,transparent 100%);
+  animation:girar 4.2s linear infinite}
+.aura::after{animation-delay:-2.1s;opacity:.7}
+.tarjeta{position:relative;flex:1;min-width:0;overflow:hidden;background:var(--noche);border-radius:24px}
+.tarjeta::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 36%,rgba(255,255,255,.18) 48%,rgba(255,255,255,0) 60%);transform:translateX(-130%);animation:reflejo 6.5s ease-in-out 1.2s infinite}
+.tarjeta.abierta::after{display:none}
+@keyframes reflejo{0%{transform:translateX(-130%)}35%,100%{transform:translateX(130%)}}
+@media (max-width:480px){body{padding-inline:10px}.escenario{height:calc(100% - 24px);margin-block:12px;min-height:560px}.aura{border-radius:22px}.tarjeta{border-radius:20px}}
 
 /* Fotos de la colección (historias) */
 .fotos{position:absolute;inset:0;background:#E9E6E1}
@@ -71,11 +89,18 @@ a{color:inherit}
 .etiqueta svg{width:15px;height:15px;flex:none}
 .etiqueta b{font-weight:600}
 .etiqueta.cambia{opacity:0;transform:translateY(8px) scale(.96)}
-.deslizar{appearance:none;cursor:pointer;border:0;background:none;color:#fff;font:500 11px/1 var(--texto);letter-spacing:.34em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 18px 2px}
-.deslizar .flecha{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:subir 1.8s ease-in-out infinite}
-.deslizar .flecha svg{width:18px;height:18px}
-.deslizar:hover .flecha{background:#fff;color:var(--tinta)}
-@keyframes subir{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.deslizar{appearance:none;cursor:pointer;position:relative;display:flex;align-items:center;gap:12px;padding:6px 22px 6px 6px;border-radius:999px;
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  color:#fff;font:600 11px/1 var(--texto);letter-spacing:.26em;text-transform:uppercase;overflow:hidden;isolation:isolate;
+  box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 0 rgba(244,228,190,.6);animation:halo 2.4s ease-out infinite;transition:background .3s}
+.deslizar::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;z-index:-1;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-130%) skewX(-15deg);animation:barrido 2.8s ease-in-out .6s infinite}
+.deslizar .flecha{position:relative;width:40px;height:40px;border-radius:50%;background:#fff;color:#111;overflow:hidden;flex:none;box-shadow:0 0 22px rgba(244,228,190,.85)}
+.deslizar .flecha svg{position:absolute;left:12px;top:12px;width:16px;height:16px;animation:chevron 1.6s ease-in-out infinite}
+.deslizar .flecha svg+svg{animation-delay:.8s}
+.deslizar:hover{background:rgba(255,255,255,.28)}
+@keyframes halo{0%{box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 0 rgba(244,228,190,.6)}75%,100%{box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 18px rgba(244,228,190,0)}}
+@keyframes barrido{0%{transform:translateX(-130%) skewX(-15deg)}55%,100%{transform:translateX(330%) skewX(-15deg)}}
+@keyframes chevron{0%{transform:translateY(13px);opacity:0}35%,60%{opacity:1}100%{transform:translateY(-13px);opacity:0}}
 .pausa .fotos figure.on img{transition-duration:0s}
 
 /* Contenido al entrar */
@@ -163,6 +188,8 @@ a.acceso:hover b{color:transparent;background-position:0 0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01s!important;transition-delay:0s!important;animation:none!important}}
 </style>
 
+<canvas id="chispas" aria-hidden="true"></canvas>
+<div class="escenario" id="escenario"><div class="flota"><div class="aura" id="aura">
 <main class="tarjeta" id="tarjeta">
   <div class="fotos" id="fotos" aria-hidden="true">
     <figure class="on"><img src="om-06.jpg" alt=""></figure>
@@ -188,7 +215,7 @@ a.acceso:hover b{color:transparent;background-position:0 0}
     <div class="pie-hist">
       <div class="marca-hist">OM SHOP</div>
       <span class="etiqueta" id="etiqueta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="etiqueta-tx"><b>Blazer</b> · 115 $</span></span>
-      <button class="deslizar" id="entrar" type="button"><span class="flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 14l6-6 6 6"/></svg></span>Desliza para entrar</button>
+      <button class="deslizar" id="entrar" type="button"><span class="flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></span>Desliza para entrar</button>
     </div>
   </section>
 
@@ -211,6 +238,7 @@ a.acceso:hover b{color:transparent;background-position:0 0}
     </div>
   </section>
 </main>
+</div></div></div>
 
 <script>
 (function(){
@@ -273,6 +301,40 @@ a.acceso:hover b{color:transparent;background-position:0 0}
       a.appendChild(o);setTimeout(function(){o.remove();},850);
     });
   });
+})();
+</script>
+<script>
+(function(){
+  var quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var cv=document.getElementById("chispas"),cx=cv.getContext("2d"),dpr=Math.min(window.devicePixelRatio||1,2),W=0,H=0,P=[],mx=0,my=0;
+  function medir(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);}
+  function nueva(inicio){var z=Math.random();return{x:Math.random()*W,y:inicio?Math.random()*H:H+10,z:.25+z*.75,f:Math.random()*6.28,v:.15+z*.45,c:Math.random()<.7?"244,228,190":"255,255,255"};}
+  medir();var N=Math.round(Math.min(110,Math.max(50,W*H/14000)));for(var k=0;k<N;k++)P.push(nueva(true));
+  addEventListener("resize",medir);
+  addEventListener("pointermove",function(e){mx=e.clientX/W-.5;my=e.clientY/H-.5;
+    var a=document.getElementById("aura"),esc=document.getElementById("escenario");
+    if(e.pointerType==="mouse"&&!esc.classList.contains("dentro")){a.style.setProperty("--ry",(mx*12).toFixed(2)+"deg");a.style.setProperty("--rx",(-my*9).toFixed(2)+"deg");}
+  });
+  function estrella(x,y,r,al,c){
+    cx.globalAlpha=al;cx.fillStyle="rgba("+c+",1)";
+    cx.beginPath();cx.moveTo(x,y-r*3);cx.quadraticCurveTo(x,y,x+r*3,y);cx.quadraticCurveTo(x,y,x,y+r*3);cx.quadraticCurveTo(x,y,x-r*3,y);cx.quadraticCurveTo(x,y,x,y-r*3);cx.fill();
+  }
+  function cuadro(t){
+    cx.clearRect(0,0,W,H);
+    for(var i=0;i<P.length;i++){
+      var p=P[i];
+      if(!quieto){p.y-=p.v;p.x+=Math.sin(t/2400+p.f)*.15*p.z;if(p.y<-10)P[i]=p=nueva(false);}
+      var px=p.x+mx*40*p.z,py=p.y+my*30*p.z,tw=.35+.65*Math.abs(Math.sin(t/900*p.z+p.f)),r=.6+p.z*1.6;
+      var g=cx.createRadialGradient(px,py,0,px,py,r*5);g.addColorStop(0,"rgba("+p.c+","+(.55*tw*p.z)+")");g.addColorStop(1,"rgba("+p.c+",0)");
+      cx.globalAlpha=1;cx.fillStyle=g;cx.beginPath();cx.arc(px,py,r*5,0,6.283);cx.fill();
+      if(p.z>.82&&tw>.8)estrella(px,py,r*.9,(tw-.8)*4,p.c);
+    }
+    cx.globalAlpha=1;
+    if(!quieto)requestAnimationFrame(cuadro);
+  }
+  requestAnimationFrame(cuadro);
+  document.getElementById("entrar").addEventListener("click",function(){document.getElementById("escenario").classList.add("dentro");});
+  document.getElementById("historia").addEventListener("touchend",function(){setTimeout(function(){if(document.getElementById("tarjeta").classList.contains("abierta"))document.getElementById("escenario").classList.add("dentro");},50);},{passive:true});
 })();
 </script>
 
